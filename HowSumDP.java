@@ -1,19 +1,26 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class HowSumDP {
     
     public static ArrayList<Integer> howSum(int targetSum, int[] arr) {
+       return internalSolution(targetSum, arr, new HashMap<Integer, ArrayList<Integer>>());
+    }
+
+    private static ArrayList<Integer> internalSolution(int targetSum, int[] arr, HashMap<Integer, ArrayList<Integer>> memo) {
+        if(memo.containsKey(targetSum)) return memo.get(targetSum);
         if(targetSum == 0) return new ArrayList<Integer>();
         if(targetSum < 0) return null;
 
         for(int num: arr ){
             int remainder = targetSum - num;
-            ArrayList<Integer> remainderResult = howSum(remainder, arr);
+            ArrayList<Integer> remainderResult = internalSolution(remainder, arr, memo);
             if(remainderResult != null) {
                 remainderResult.add(num);
-                return remainderResult;
+                memo.put(targetSum, remainderResult);
+                return memo.get(targetSum);
             }
         }
+        memo.put(targetSum, null);
         return null;
     }
 
