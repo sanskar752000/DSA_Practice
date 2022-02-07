@@ -1,8 +1,13 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BestSumDP {
     
     public static ArrayList<Integer> bestSum(int[] arr, int targetSum) {
+        return internalSolution(arr, targetSum, new HashMap<>());
+    }
+    private static ArrayList<Integer> internalSolution(int[] arr, int targetSum, HashMap<Integer, ArrayList<Integer>> memo) {
+        if(memo.containsKey(targetSum)) return memo.get(targetSum);
         if(targetSum == 0) return new ArrayList<>();
         if(targetSum < 0) return null;
 
@@ -10,18 +15,18 @@ public class BestSumDP {
 
         for(int x: arr) {
             int remainder = targetSum - x;
-            ArrayList<Integer> remainderCombination = bestSum(arr, remainder);
+            ArrayList<Integer> remainderCombination = internalSolution(arr, remainder, memo);
             if(remainderCombination != null) {
-                remainderCombination.add(x);
-                if(shortestCombination == null || remainderCombination.size() < shortestCombination.size()) {
-                    shortestCombination = remainderCombination;
+                ArrayList<Integer> combination = new ArrayList<>(remainderCombination);
+                combination.add(x);
+                if(shortestCombination == null || combination.size() < shortestCombination.size()) {
+                    shortestCombination = combination;
                 }
             }
         }
-
-        return shortestCombination;
+        memo.put(targetSum, shortestCombination);
+        return memo.get(targetSum);
     }
-
 
     public static void main(String[] args) {
         System.out.println(BestSumDP.bestSum(new int[] {5, 3, 4, 7}, 7));
