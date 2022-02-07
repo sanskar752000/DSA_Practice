@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class CanConstructDP {
     /*
     Write a function 'canConstruct(target, wordBank)' that accepts a target string and an array of strings.
@@ -12,23 +14,28 @@ public class CanConstructDP {
     Output: true
     */
 
-    public static boolean canConstruct(String target, String[] wordBank) {
+    public static boolean canConstruct(String target, String[] wordBank, HashMap<String, Boolean> memo) {
+        if(memo.containsKey(target)) return memo.get(target);
         if(target.equals("")) return true;
 
         for(String word: wordBank) {
             if(target.indexOf(word) == 0) {
                 String suffix = target.substring(word.length());
-                if(canConstruct(suffix, wordBank) == true) {
+                if(canConstruct(suffix, wordBank, memo)) {
+                    memo.put(target, true);
                     return true;
                 }
             }
         }
+        memo.put(target, false);
         return false;
     }
+
+
     public static void main(String[] args) {
-        System.out.println(CanConstructDP.canConstruct("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"})); // true
-        System.out.println(CanConstructDP.canConstruct("skateboard", new String[] {"ba", "rd", "ate", "t", "ska", "sk", "boar"})); // false
-        System.out.println(CanConstructDP.canConstruct("enterpotentpot", new String[] {"a", "p", "ent", "enter", "ot", "o", "t"})); // true
+        System.out.println(CanConstructDP.canConstruct("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"}, new HashMap<>())); // true
+        System.out.println(CanConstructDP.canConstruct("skateboard", new String[] {"ba", "rd", "ate", "t", "ska", "sk", "boar"}, new HashMap<>())); // false
+        System.out.println(CanConstructDP.canConstruct("enterpotentpot", new String[] {"a", "p", "ent", "enter", "ot", "o", "t"}, new HashMap<>())); // true
         System.out.println(CanConstructDP.canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", 
         new String[] {
             "e",
@@ -37,6 +44,20 @@ public class CanConstructDP {
             "eeee",
             "eeeee",
             "eeeeee"
-        })); // false
+        }, new HashMap<>())); // false
     }
+
+    /*
+    m = target.length
+    n = wordBank.length
+
+    Brute Force
+    O(n^m * m) time
+    O(m^2) space
+
+    Optimized (using memoized solution)
+    O(n * m^2) time
+    O(m^2) space
+
+    */
 }
