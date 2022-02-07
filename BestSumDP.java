@@ -27,11 +27,23 @@ public class BestSumDP {
         memo.put(targetSum, shortestCombination);
         return memo.get(targetSum);
     }
-
     public static void main(String[] args) {
         System.out.println(BestSumDP.bestSum(new int[] {5, 3, 4, 7}, 7));
         System.out.println(BestSumDP.bestSum(new int[] {2, 3, 5}, 8));
         System.out.println(BestSumDP.bestSum(new int[] {1, 4, 5}, 8));
         System.out.println(BestSumDP.bestSum(new int[] {1, 2, 5, 25}, 100));
     }
+
+    /*
+    m = target sum
+    n = numbers.length
+
+    // Brute Force
+    time: O(n^m * m)
+    space: O(m^2)
+
+    // Memoized
+    time: O(m^2 * n)
+    spae: O(m^2)
+    */
 }
