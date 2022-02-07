@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class CountConstructDP {
     
     /* 
@@ -13,7 +15,8 @@ public class CountConstructDP {
     Output: 1
     */
 
-    public static int countConstruct(String target, String[] wordBank) {
+    public static int countConstruct(String target, String[] wordBank, HashMap<String, Integer> memo) {
+        if(memo.containsKey(target)) return memo.get(target);
         if(target.equals("")) return 1;
         
         int totalCount = 0;
@@ -21,18 +24,19 @@ public class CountConstructDP {
         for(String word: wordBank) {
             if(target.indexOf(word) == 0) {
                 String suffix = target.substring(word.length());
-                int numWaysForRest = countConstruct(suffix, wordBank);
+                int numWaysForRest = countConstruct(suffix, wordBank, memo);
                 totalCount += numWaysForRest;
             }
         }
-
+        memo.put(target, totalCount);
         return totalCount;
     }
 
     public static void main(String[] args) {
-        System.out.println(CountConstructDP.countConstruct("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"})); // true
-        System.out.println(CountConstructDP.countConstruct("skateboard", new String[] {"ba", "rd", "ate", "t", "ska", "sk", "boar"})); // false
-        System.out.println(CountConstructDP.countConstruct("enterpotentpot", new String[] {"a", "p", "ent", "enter", "ot", "o", "t"})); // true
+        System.out.println(CountConstructDP.countConstruct("purple", new String[] {"purp", "p", "ur", "le", "purpl"}, new HashMap<>())); // true
+        System.out.println(CountConstructDP.countConstruct("abcdef", new String[] {"ab", "abc", "cd", "def", "abcd"}, new HashMap<>())); // true
+        System.out.println(CountConstructDP.countConstruct("skateboard", new String[] {"ba", "rd", "ate", "t", "ska", "sk", "boar"}, new HashMap<>())); // false
+        System.out.println(CountConstructDP.countConstruct("enterpotentpot", new String[] {"a", "p", "ent", "enter", "ot", "o", "t"}, new HashMap<>())); // true
         System.out.println(CountConstructDP.countConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", 
         new String[] {
             "e",
@@ -41,7 +45,7 @@ public class CountConstructDP {
             "eeee",
             "eeeee",
             "eeeeee"
-        }));
+        }, new HashMap<>()));
     }
     
 }
