@@ -47,5 +47,18 @@ public class CountConstructDP {
             "eeeeee"
         }, new HashMap<>()));
     }
+
+    /*
+    m = target.length
+    n = wordBank.length
+
+    Brute Force
+    O(n^m * m) time
+    O(m^2) space
+
+    Optimized (using memoized solution)
+    O(n * m^2) time
+    O(m^2) space
+    */
     
 }
